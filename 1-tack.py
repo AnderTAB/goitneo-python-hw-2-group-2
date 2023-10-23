@@ -3,6 +3,21 @@ def parse_input(user_input):
     cmd = cmd.strip().lower()
     return cmd, *args
 
+def input_error(func):
+    def inner(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except ValueError:
+            return "Give me name and phone please."
+        except KeyError:
+            return "Enter user name."
+        except IndexError:
+            return "Invalid input. Please try again."
+
+    return inner
+
+
+@input_error
 def add_contact(args, contacts):
     if len(args) != 2:
         return f'Invalid command. Додайте add [name] [phone]'
